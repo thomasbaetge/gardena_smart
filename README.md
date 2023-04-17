@@ -24,7 +24,7 @@ This line will continously restart the service, when the websocket connection fa
 If you don't know how to create a systemd service, there's a pletheora of howTo's out there like 
 https://linuxhandbook.com/create-systemd-services/
 
-Install the attached sample Flow in Node-Red. This one integrates with domoticz, but it should be easy to interface to any other HA-system, as long as it understands MQTT (if your's doesn't, it is most likely crap anyway).
+Import the attached sample Flow in Node-Red and adjust MQTT Broker etc to yours. This flow integrates with domoticz, but it should be easy to interface to any other HA-system, as long as it understands MQTT (if your's doesn't, it is most likely crap anyway).
 
 I have this running for 3 years now, sometimes they make unexpected changes to the API.
 For now it works as is.
