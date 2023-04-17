@@ -1,0 +1,709 @@
+[
+    {
+        "id": "d2672de8.06a3f",
+        "type": "tab",
+        "label": "Gardena smart",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "5465f073.16141",
+        "type": "mqtt in",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "topic": "Gardena/out",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "51a7fc7c14326b9c",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 150,
+        "y": 80,
+        "wires": [
+            [
+                "e48c5b94.aab428"
+            ]
+        ]
+    },
+    {
+        "id": "7aae1cd9.b1a794",
+        "type": "debug",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "e48c5b94.aab428",
+        "type": "json",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "7aae1cd9.b1a794",
+                "bef88a26.16d6e8",
+                "9d7cccf0.6fa44"
+            ]
+        ]
+    },
+    {
+        "id": "e974d0ee.c43c4",
+        "type": "mqtt out",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "topic": "Gardena/in",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "51a7fc7c14326b9c",
+        "x": 1190,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "3df6c060.dea4f",
+        "type": "inject",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 440,
+        "wires": [
+            [
+                "74207a8.79b8b84"
+            ]
+        ]
+    },
+    {
+        "id": "74207a8.79b8b84",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Park until further notice",
+        "func": "\nvar id = flow.get(\"SERVICE_ID\")\nmsg.payload = {\n    \"data\":{\n          \"type\": \"MOWER_CONTROL\", \n          \"id\": id, \n          \"attributes\": {\n          \"command\": \"PARK_UNTIL_FURTHER_NOTICE\",\n          \"seconds\": 60\n        }\n}}\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "e974d0ee.c43c4",
+                "2333dc21.55c1d4"
+            ]
+        ]
+    },
+    {
+        "id": "d7438ddc.176af",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Resume operation",
+        "func": "var id = flow.get(\"SERVICE_ID\")\nmsg.payload = {\n    \"data\":{\n          \"type\": \"MOWER_CONTROL\", \n          \"id\": id, \n          \"attributes\": {\n          \"command\": \"START_DONT_OVERRIDE\",\n          \"seconds\": 60\n        }\n}\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 370,
+        "y": 480,
+        "wires": [
+            [
+                "e974d0ee.c43c4",
+                "79db46b9.646d38"
+            ]
+        ]
+    },
+    {
+        "id": "10b5ab82.57dde4",
+        "type": "inject",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 500,
+        "wires": [
+            [
+                "d7438ddc.176af"
+            ]
+        ]
+    },
+    {
+        "id": "540e1893.ae82b8",
+        "type": "mqtt in",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "topic": "domoticz/out",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "51a7fc7c14326b9c",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 100,
+        "y": 580,
+        "wires": [
+            [
+                "4ae3582a.971d28"
+            ]
+        ]
+    },
+    {
+        "id": "4ae3582a.971d28",
+        "type": "json",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 270,
+        "y": 580,
+        "wires": [
+            [
+                "ba361b49.fc7308",
+                "bfcd9daa.38f0a"
+            ]
+        ]
+    },
+    {
+        "id": "ba361b49.fc7308",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Rain sensor",
+        "func": "var enabled = flow.get(\"ENABLED\")\nif (msg.payload.idx == \"14\" && enabled === 1)\n{\n\n\n\nvar rain = parseInt(msg.payload.svalue1)\n\nif (rain > 20)\n{msg.payload = \"true\" }\nif (rain < 10)\n{msg.payload = \"false\" }\n\nreturn msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 440,
+        "y": 580,
+        "wires": [
+            [
+                "350da58c.7c2faa"
+            ]
+        ]
+    },
+    {
+        "id": "350da58c.7c2faa",
+        "type": "rbe",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 580,
+        "y": 580,
+        "wires": [
+            [
+                "35881376.324c2c"
+            ]
+        ]
+    },
+    {
+        "id": "35881376.324c2c",
+        "type": "switch",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "true",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "false",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 700,
+        "y": 580,
+        "wires": [
+            [
+                "74207a8.79b8b84"
+            ],
+            [
+                "687ac0c.fdadc4"
+            ]
+        ]
+    },
+    {
+        "id": "687ac0c.fdadc4",
+        "type": "delay",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "30",
+        "timeoutUnits": "minutes",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "outputs": 1,
+        "x": 880,
+        "y": 580,
+        "wires": [
+            [
+                "d7438ddc.176af"
+            ]
+        ]
+    },
+    {
+        "id": "2333dc21.55c1d4",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "d": true,
+        "name": "message parking",
+        "func": "    msg.payload = \n   {\"command\": \"sendnotification\",\n    \"subject\": \"C3PO\",\n    \"body\": \"Robot is parking until next schedule\",\n    \"priority\": 0}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 320,
+        "wires": [
+            [
+                "d5c97d1e.6dcc5"
+            ]
+        ]
+    },
+    {
+        "id": "79db46b9.646d38",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "d": true,
+        "name": "message resuming",
+        "func": "    msg.payload = \n   {\"command\": \"sendnotification\",\n    \"subject\": \"C3PO\",\n    \"body\": \"Robot is resuming schedule\",\n    \"priority\": 0}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 360,
+        "wires": [
+            [
+                "d5c97d1e.6dcc5"
+            ]
+        ]
+    },
+    {
+        "id": "d5c97d1e.6dcc5",
+        "type": "mqtt out",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "topic": "domoticz/in",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "51a7fc7c14326b9c",
+        "x": 1210,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "bef88a26.16d6e8",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Extract Service ID",
+        "func": "\n//Service.Id\nif (msg.payload.type == \"DEVICE\")\n\nflow.set(\"SERVICE_ID\", msg.payload.relationships.services.data[1].id)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 540,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bfcd9daa.38f0a",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Main Switch",
+        "func": "if (msg.payload.idx == 464)\n{\n    flow.set(\"ENABLED\", msg.payload.nvalue)\nreturn msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 430,
+        "y": 640,
+        "wires": [
+            [
+                "c5d5bcb5.aa24"
+            ]
+        ]
+    },
+    {
+        "id": "20af9244.145b5e",
+        "type": "switch",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "property": "payload.idx",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 710,
+        "y": 640,
+        "wires": [
+            [
+                "d7438ddc.176af",
+                "cb02a7d4.acc478"
+            ],
+            [
+                "74207a8.79b8b84"
+            ]
+        ]
+    },
+    {
+        "id": "c5d5bcb5.aa24",
+        "type": "rbe",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 590,
+        "y": 640,
+        "wires": [
+            [
+                "20af9244.145b5e"
+            ]
+        ]
+    },
+    {
+        "id": "9d7cccf0.6fa44",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Parse Battery level and mower status",
+        "func": "var newmsg = {headers: \"\", payload:\"\", topic:\"\"}\nif (msg.payload.type == \"COMMON\")\n{\n\nnewmsg.payload = { \n    \"command\": \"udevice\",\n    \"idx\" :389,\n        \"nvalue\" :msg.payload.attributes.batteryLevel.value,\n    \"svalue\" :msg.payload.attributes.batteryLevel.value.toString()}\n\nreturn newmsg;\n}\nif (msg.payload.type == \"MOWER\")\n{\n       flow.set(\"MOWER_STATUS\", msg.payload.attributes.activity.value.toString())\n    newmsg.payload = { \n    \"command\": \"udevice\",\n    \"idx\" :393,\n    \"nvalue\" :0,\n    \"svalue\" :msg.payload.attributes.activity.value.toString()\n \n}\n    return newmsg;\n}\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 620,
+        "y": 220,
+        "wires": [
+            [
+                "d5c97d1e.6dcc5",
+                "68cce461.62a3bc"
+            ]
+        ]
+    },
+    {
+        "id": "68cce461.62a3bc",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "func": "if (msg.payload.idx == 393)\n{\n\n    return msg;\n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 860,
+        "y": 160,
+        "wires": [
+            [
+                "31a37bed.0c7a14"
+            ]
+        ]
+    },
+    {
+        "id": "31a37bed.0c7a14",
+        "type": "rbe",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "func": "rbe",
+        "gap": "",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 1030,
+        "y": 160,
+        "wires": [
+            [
+                "af70f2b5.d1d0d"
+            ]
+        ]
+    },
+    {
+        "id": "ad7e0867.ae1ea8",
+        "type": "debug",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "3c5111e8.33920e",
+        "type": "inject",
+        "z": "d2672de8.06a3f",
+        "name": "Main Switch",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "00 08 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"command\":\"getdeviceinfo\",\"idx\":464}",
+        "payloadType": "json",
+        "x": 1190,
+        "y": 620,
+        "wires": [
+            [
+                "d5c97d1e.6dcc5"
+            ]
+        ]
+    },
+    {
+        "id": "2f074ce4.6ef3d4",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Gardena Update Domoticz",
+        "func": "var newmsg = {headers: \"\", payload:\"\", topic:\"\"}\n\nvar mins = msg.interval / 60000\nnode.log(mins)\n//mins  = parseFloat(mins).toFixed(2)\nvar mint = parseInt(mins)\nnode.log(mint)\n\n\n\nif (msg.payload.svalue == \"OK_SEARCHING\") // cutting time\n{\n\n    newmsg.payload = { \n    \"command\": \"udevice\",\n    \"idx\" :466,\n    \"nvalue\" :0,\n    \"svalue\" : mint.toString()}\n    return newmsg;\n}\n\nif (msg.payload.svalue == \"OK_CHARGING\") //search time\n{\n    newmsg.payload = { \n    \"command\": \"udevice\",\n    \"idx\" :467,\n    \"nvalue\" :0,\n    \"svalue\" : mint.toString()}\n    return newmsg;\n}\n\nif (msg.payload.svalue == \"OK_LEAVING\") //charging time\n{\n        newmsg.payload = { \n    \"command\": \"udevice\",\n    \"idx\" :465,\n    \"nvalue\" :0,\n    \"svalue\" : mint.toString()}\n    return newmsg;\n    \n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1500,
+        "y": 160,
+        "wires": [
+            [
+                "d5c97d1e.6dcc5",
+                "e3e183b.c25b18"
+            ]
+        ]
+    },
+    {
+        "id": "e3e183b.c25b18",
+        "type": "debug",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "cb02a7d4.acc478",
+        "type": "debug",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "de3af636.2e1be8",
+        "type": "function",
+        "z": "d2672de8.06a3f",
+        "name": "Cut 80 minutes",
+        "func": "\nvar id = flow.get(\"SERVICE_ID\")\nmsg.payload = {\n    \"data\":{\n          \"type\": \"MOWER_CONTROL\", \n          \"id\": id, \n          \"attributes\": {\n          \"command\": \"START_SECONDS_TO_OVERRIDE\",\n          \"seconds\": 4800\n        }\n}}\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 340,
+        "y": 320,
+        "wires": [
+            [
+                "e974d0ee.c43c4"
+            ]
+        ]
+    },
+    {
+        "id": "9aacdf1f.8e5bc",
+        "type": "inject",
+        "z": "d2672de8.06a3f",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 320,
+        "wires": [
+            [
+                "de3af636.2e1be8"
+            ]
+        ]
+    },
+    {
+        "id": "af70f2b5.d1d0d",
+        "type": "interval-length",
+        "z": "d2672de8.06a3f",
+        "format": "mills",
+        "bytopic": false,
+        "minimum": "",
+        "maximum": "",
+        "window": "",
+        "timeout": false,
+        "msgTimeout": "2",
+        "minimumunit": "msecs",
+        "maximumunit": "msecs",
+        "windowunit": "msecs",
+        "msgTimeoutUnit": "hours",
+        "reset": false,
+        "startup": true,
+        "msgField": "interval",
+        "timestampField": "timestamp",
+        "repeatTimeout": false,
+        "name": "",
+        "x": 1200,
+        "y": 160,
+        "wires": [
+            [
+                "2f074ce4.6ef3d4",
+                "ad7e0867.ae1ea8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "51a7fc7c14326b9c",
+        "type": "mqtt-broker",
+        "name": "TBADS2",
+        "broker": "192.168.2.11",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]
