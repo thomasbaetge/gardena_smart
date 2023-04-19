@@ -36,6 +36,7 @@ class Client:
 
     def on_error(self, error, any):
         print("error", error)
+        time.sleep(60)
         os.system("sudo service gardena restart") #please adjust, if your service has a differnt name
 
     def on_close(self):
