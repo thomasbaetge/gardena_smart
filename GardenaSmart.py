@@ -8,15 +8,15 @@ import requests
 import json
 import paho.mqtt.client as mqtt
 
-# account specific values
-USERNAME = 'yourGardenaUserName'
-PASSWORD = 'YourGardenaPassword'
-API_KEY = 'yourGardenaAPIKey'
+# account specific values, edit to your values!:
+
+API_KEY = 'YourAPIKey'
+CLIENT_SECRET = 'YourClientSecret'
 #MQTT Broker
 BROKER = 'BrokerIP'
 BROKER_PORT = 1883
-BROKER_USER = 'ifApplicable'
-BROKER_PW = 'ifApplicable'
+BROKER_USER = 'IfApplicable'
+BROKER_PW = 'IfApplicable'
 # other constants
 AUTHENTICATION_HOST = 'https://api.authentication.husqvarnagroup.dev'
 SMART_HOST = 'https://api.smart.gardena.dev'
@@ -36,8 +36,9 @@ class Client:
 
     def on_error(self, error, any):
         print("error", error)
-        time.sleep(60)
-        os.system("sudo service gardena restart") #please adjust, if your service has a differnt name
+        time.sleep(60) # Wait 1 minute
+        #sys.exit()
+        os.system("sudo service gardena restart")
 
     def on_close(self):
         print("### Gardena WS closed ###")
@@ -92,9 +93,8 @@ class mqttClient:
 
 
 if __name__ == "__main__":
-    payload = {'grant_type': 'password', 'username': USERNAME, 'password': PASSWORD,
-               'client_id': API_KEY}
-
+    
+    payload = {'grant_type': 'client_credentials', 'client_id': API_KEY, 'client_secret': CLIENT_SECRET}
     print("Logging into authentication system...")
     r = requests.post(f'{AUTHENTICATION_HOST}/v1/oauth2/token', data=payload)
     assert r.status_code == 200, r
@@ -106,12 +106,11 @@ if __name__ == "__main__":
     headers = {
         "Content-Type": "application/vnd.api+json",
         "x-api-key": API_KEY,
-        "Authorization-Provider": "husqvarna",
         "Authorization": "Bearer " + auth_token
     }
 
     r = requests.get(f'{SMART_HOST}/v1/locations', headers=headers)
-    assert r.status_code == 200, r
+    assert r.status_code == 200,format(r)
     assert len(r.json()["data"]) > 0, 'location missing - user has not setup system'
     location_id = r.json()["data"][0]["id"]
 
