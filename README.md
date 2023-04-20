@@ -4,7 +4,12 @@ This is a node-red / MQTT integration for Gardena Sileno Smart and similar Autmo
 
 Technically, other gardena smart devices should work too, but I can not test that.
 
-My installation is on a linux machine, so this document refers to Linux (tested on RPI3B+ and INtel NUC, running Debian 11.
+My installation is on a linux machine, so this document refers to Linux (tested on RPI3B+ and Intel NUC, running Debian 11.)  
+
+**Update 04/23**  
+Due to some changes, my API key got blocked, because the restart was too fast (I assume)
+new version will take care of the service restart with a delay of 60 secs. please make sure you set the service restart policy to 'no' as restarting is handled by the sortware itself now.
+Also autorization has been adopted to the recent API changes, User and PW are no longer required.
 
 **How to install:**
 Download GardenaSmart.py and place it somewhere in your user directory.
