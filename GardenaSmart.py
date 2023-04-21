@@ -7,6 +7,7 @@ import os
 import requests
 import json
 import paho.mqtt.client as mqtt
+import rel
 
 # account specific values, edit to your values!:
 
@@ -35,10 +36,8 @@ class Client:
         mclient.publish('Gardena/out', message)
 
     def on_error(self, error, any):
-        print("error", error)
-        time.sleep(60) # Wait 1 minute
-        #sys.exit()
-        os.system("sudo service gardena restart")
+        print("Websocket error", error)
+        
 
     def on_close(self):
         print("### Gardena WS closed ###")
@@ -156,7 +155,9 @@ if __name__ == "__main__":
         on_pong=client.on_pong)
     ws.on_open = client.on_open
     
-    ws.run_forever(ping_interval=150, ping_timeout=10)
+    ws.run_forever(ping_interval=150, ping_timeout=10,dispatcher=rel, reconnect=5)
+    rel.signal(2, rel.abort)
+    rel.dispatch()
     
     
     
