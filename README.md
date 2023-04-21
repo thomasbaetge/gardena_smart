@@ -7,9 +7,8 @@ Technically, other gardena smart devices should work too, but I can not test tha
 My installation is on a linux machine, so this document refers to Linux (tested on RPI3B+ and Intel NUC, running Debian 11.)  
 
 **Update 04/23**  
-Due to some changes, my API key got blocked, because the restart was too fast (I assume)
-new version will take care of the service restart with a delay of 60 secs. please make sure you set the service restart policy to 'no' as restarting is handled by the sortware itself now.
-Also autorization has been adopted to the recent API changes, User and PW are no longer required.
+Due to some changes, my API key got blocked, because the restart was too fast (I assume), which was caused by the websocket connection raising errors ever few minutes.
+I have now implemented a propper reconnect for the websocket, so it seems no longer required to restart the service itself.
 
 **How to install:**
 Download GardenaSmart.py and place it somewhere in your user directory.
@@ -24,8 +23,7 @@ pip install paho-mqtt
 pip install requests
 pip install json
 
-Create a systemd service called 'gardena'. if you give it a different name, please adjust the code in line 39 accordingly.
-This line will continously restart the service, when the websocket connection fails or gets terminated by the endpoint, which happens quite often.
+Create a systemd service for the program.
 If you don't know how to create a systemd service, there's a pletheora of howTo's out there like 
 https://linuxhandbook.com/create-systemd-services/
 
