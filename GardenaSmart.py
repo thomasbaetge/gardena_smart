@@ -39,7 +39,10 @@ class Client:
     def on_error(self, error, any):
         print("error", error)
         print("threads:", threading.active_count())
-        
+        mclient.disconnect()
+        self.live = False
+        time.sleep(2)
+        sys.exit(1) # Exit with error code, so service will be restarted automatically
         
 
     def on_close(self,close_status_code, close_msg, any):
